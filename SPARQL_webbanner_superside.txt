@@ -9,7 +9,7 @@ WHERE {
   ?concept brand:description ?sceneDesc .
 
   # 2. CAMPAIGN TEXT DATA (COPY)
-  # Usamos OPTIONAL para que no falle si falta algún texto
+  # Usamos OPTIONAL para que no falle si falta algún texto 
   OPTIONAL { ex:Campaign_Web_NewFeatures_2025Q1 brand:hasHeadline ?headline . }
   OPTIONAL { ex:Campaign_Web_NewFeatures_2025Q1 brand:hasSubhead ?subhead . }
   OPTIONAL { ex:Campaign_Web_NewFeatures_2025Q1 brand:hasCTA ?cta . }
@@ -81,3 +81,4 @@ WHERE {
 }
 
 LIMIT 1
+
