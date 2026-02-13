@@ -82,11 +82,14 @@ Typography preferences
 Logo usage rules
 Style constraints (e.g., no neon)
 Visual anchor definitions
-query.sparql — Context Assembly Logic
+
+### query.sparql
+Context Assembly Logic
 Retrieves campaign-specific constraints and compiles them into a structured system prompt.
 
 This demonstrates selective retrieval instead of full-context injection.
-shapes.ttl — Validation Rules
+
+### shapes.ttl — Validation Rules
 Defines SHACL constraints to ensure structural integrity of the dataset.
 For example:
 
