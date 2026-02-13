@@ -79,4 +79,5 @@ WHERE {
     "Text errors, spelling mistakes, messy typography, ", ?negativeBlock
   ) AS ?finalPrompt)
 }
+
 LIMIT 1
