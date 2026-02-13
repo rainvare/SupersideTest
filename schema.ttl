@@ -1,0 +1,56 @@
+@prefix brand: <https://schema.example.com/brand/> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+
+brand: a owl:Ontology ;
+  rdfs:label "Superside BrandOps Ontology v2.1 (Graphic Layer Support)" .
+
+############################
+# MAIN CLASSES
+############################
+brand:Brand              a owl:Class .
+brand:Campaign           a owl:Class .
+brand:VisualConcept      a owl:Class . # NARRATIVE
+brand:ImageryRule        a owl:Class .
+brand:LogoUsageRule      a owl:Class . # LOGO
+brand:Deliverable        a owl:Class .
+brand:Format             a owl:Class .
+brand:Typography         a owl:Class .
+
+############################
+# GRAPHIC DESIGN PROPERTIES 
+############################
+
+# Campaign Texts (Copy)
+brand:hasHeadline        a owl:DatatypeProperty ; rdfs:range xsd:string .
+brand:hasSubhead         a owl:DatatypeProperty ; rdfs:range xsd:string .
+brand:hasCTA             a owl:DatatypeProperty ; rdfs:range xsd:string .
+
+# Logo Configuration
+brand:logoPlacement      a owl:DatatypeProperty ; rdfs:range xsd:string . # ej: "Top Right"
+brand:logoStyle          a owl:DatatypeProperty ; rdfs:range xsd:string . # ej: "White Monochrome"
+brand:hasLogoUsageRule   a owl:ObjectProperty ; rdfs:domain brand:Brand ; rdfs:range brand:LogoUsageRule .
+
+############################
+# VISUAL PROPERTIES (NARRATIVE)
+############################
+
+brand:hasVisualConcept   a owl:ObjectProperty ; rdfs:domain brand:Campaign ; rdfs:range brand:VisualConcept .
+brand:hasVisualAnchor    a owl:DatatypeProperty ; rdfs:domain brand:VisualConcept ; rdfs:range xsd:string .
+brand:description        a owl:DatatypeProperty ; rdfs:range xsd:string .
+
+############################
+# OTHER RELATIONSHIPS
+############################
+
+brand:forBrand           a owl:ObjectProperty .
+brand:hasImageryRule     a owl:ObjectProperty .
+brand:ruleType           a owl:DatatypeProperty . # "positive" / "negative"
+brand:hasTypography      a owl:ObjectProperty .
+brand:primaryFontFamily  a owl:DatatypeProperty .
+brand:hasDeliverable     a owl:ObjectProperty .
+brand:usesFormat         a owl:ObjectProperty .
+brand:widthPx            a owl:DatatypeProperty .
+brand:heightPx           a owl:DatatypeProperty .

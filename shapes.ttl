@@ -1,0 +1,39 @@
+@prefix sh:    <http://www.w3.org/ns/shacl#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix brand: <https://schema.example.com/brand/> .
+
+brand:BrandShape a sh:NodeShape ;
+  sh:targetClass brand:Brand ;
+  sh:property [
+    sh:path brand:name ; sh:datatype xsd:string ; sh:minCount 1 ;
+  ] ;
+  sh:property [
+    sh:path brand:hasTone ; sh:class brand:Tone ; sh:minCount 1 ;
+  ] ;
+  sh:property [
+    sh:path brand:hasVisualStyle ; sh:class brand:VisualStyle ; sh:minCount 1 ;
+  ] ;
+  sh:property [
+    sh:path brand:hasColorPalette ; sh:class brand:ColorPalette ; sh:minCount 1 ;
+  ] ;
+  sh:property [
+    sh:path brand:hasTypography ; sh:class brand:Typography ; sh:minCount 1 ;
+  ] .
+
+brand:CampaignShape a sh:NodeShape ;
+  sh:targetClass brand:Campaign ;
+  sh:property [ sh:path brand:forBrand ; sh:class brand:Brand ; sh:minCount 1 ] ;
+  sh:property [ sh:path brand:targetsAudience ; sh:class brand:Audience ; sh:minCount 1 ] ;
+  sh:property [ sh:path brand:hasDeliverable ; sh:class brand:Deliverable ; sh:minCount 1 ] .
+
+brand:DeliverableShape a sh:NodeShape ;
+  sh:targetClass brand:Deliverable ;
+  sh:property [ sh:path brand:forChannel ; sh:class brand:Channel ; sh:minCount 1 ] ;
+  sh:property [ sh:path brand:usesFormat ; sh:class brand:Format ; sh:minCount 1 ] ;
+  sh:property [ sh:path brand:requiresAsset ; sh:class brand:Asset ; sh:minCount 1 ] .
+
+brand:AssetShape a sh:NodeShape ;
+  sh:targetClass brand:Asset ;
+  sh:property [ sh:path brand:assetType ; sh:datatype xsd:string ; sh:minCount 1 ] ;
+  sh:property [ sh:path brand:assetUri ; sh:datatype xsd:anyURI ; sh:minCount 1 ] ;
+  sh:property [ sh:path brand:conformsToRule ; sh:class brand:Constraint ; sh:minCount 1 ] .

@@ -1,0 +1,82 @@
+PREFIX brand: <https://schema.example.com/brand/>
+PREFIX ex:    <https://data.example.com/>
+
+SELECT ?finalPrompt
+WHERE {
+  # 1. CAMPAIGN AND CONCEPT
+  ex:Campaign_Web_NewFeatures_2025Q1 brand:forBrand ?brand ;
+                                     brand:hasVisualConcept ?concept .
+  ?concept brand:description ?sceneDesc .
+
+  # 2. CAMPAIGN TEXT DATA (COPY)
+  # Usamos OPTIONAL para que no falle si falta algún texto
+  OPTIONAL { ex:Campaign_Web_NewFeatures_2025Q1 brand:hasHeadline ?headline . }
+  OPTIONAL { ex:Campaign_Web_NewFeatures_2025Q1 brand:hasSubhead ?subhead . }
+  OPTIONAL { ex:Campaign_Web_NewFeatures_2025Q1 brand:hasCTA ?cta . }
+  OPTIONAL { ex:Campaign_Web_NewFeatures_2025Q1 brand:logoPlacement ?logoPlace . }
+  OPTIONAL { ex:Campaign_Web_NewFeatures_2025Q1 brand:logoStyle ?logoStyleVariant . }
+
+  # 3. TYPOGRAPHY DATA
+  OPTIONAL {
+    ?brand brand:hasTypography ?typo .
+    ?typo brand:primaryFontFamily ?fontPrimary .
+  }
+
+  # 4. LOGO RULES
+  OPTIONAL {
+    ?brand brand:hasLogoUsageRule ?logoRule .
+    ?logoRule brand:description ?logoDesc .
+  }
+
+  # 5. VISUAL ANCHORS
+  {
+    SELECT ?concept (GROUP_CONCAT(?anchor; separator=", ") AS ?anchorBlock)
+    WHERE { ?concept brand:hasVisualAnchor ?anchor . } GROUP BY ?concept
+  }
+
+  # 6. STYLE (Positive)
+  {
+    SELECT ?brand (GROUP_CONCAT(DISTINCT ?posRule; separator=". ") AS ?styleBlock)
+    WHERE {
+      ?brand brand:hasImageryRule ?ir .
+      ?ir brand:ruleType "positive" ; brand:description ?posRule .
+    } GROUP BY ?brand
+  }
+
+  # 7. NEGATIVE PROMPT
+  {
+    SELECT ?brand (GROUP_CONCAT(DISTINCT ?negRule; separator=". ") AS ?negativeBlock)
+    WHERE {
+      ?brand brand:hasImageryRule ?ir .
+      ?ir brand:ruleType "negative" ; brand:description ?negRule .
+    } GROUP BY ?brand
+  }
+
+  # 8. FINAL PROMPT
+  BIND(CONCAT(
+    "--- ROLE ---\n",
+    "ROLE: Expert Graphic Designer & Photographer.\n",
+    "OUTPUT: High-resolution Banner Composition.\n\n",
+    
+    "--- GRAPHIC LAYER (TEXT & LOGO) ---\n",
+    "LAYOUT: Website Hero Banner structure.\n",
+    "HEADLINE TEXT: '", COALESCE(?headline, "Insert Headline"), "'\n",
+    "SUBHEAD TEXT: '", COALESCE(?subhead, ""), "'\n",
+    "CTA BUTTON: '", COALESCE(?cta, "Learn More"), "'\n",
+    "TYPOGRAPHY STYLE: Use font '", COALESCE(?fontPrimary, "Sans Serif"), "' (Clean, Bold, Swiss style).\n",
+    "LOGO INSTRUCTION: Place logo in ", COALESCE(?logoPlace, "Corner"), ". Style: ", COALESCE(?logoStyleVariant, "Standard"), ". Rule: ", COALESCE(?logoDesc, ""), "\n\n",
+    
+    "--- BACKGROUND SCENE (VISUALS) ---\n",
+    ?sceneDesc, "\n\n",
+    
+    "--- VISUAL ANCHORS ---\n",
+    "Include: ", ?anchorBlock, ".\n\n",
+    
+    "--- BRAND ATMOSPHERE ---\n",
+    ?styleBlock, ".\n\n",
+    
+    "--- NEGATIVE PROMPT ---\n",
+    "Text errors, spelling mistakes, messy typography, ", ?negativeBlock
+  ) AS ?finalPrompt)
+}
+LIMIT 1

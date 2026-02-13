@@ -1,0 +1,81 @@
+@prefix brand: <https://schema.example.com/brand/> .
+@prefix ex:    <https://data.example.com/> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+
+############################
+# THE BRAND
+############################
+ex:Superside a brand:Brand ;
+  brand:name "Superside" ;
+  brand:hasTypography ex:Typography_Superside_2025 ;
+  brand:hasLogoUsageRule ex:LogoRule_RefinedSquiggle ;
+  
+  # Image Rules
+  brand:hasImageryRule ex:Rule_Photoreal, ex:Rule_SystemAware, ex:Rule_NoNeon, ex:Rule_NoStock .
+
+############################
+# CAMPAIGN: NEW WEB FEATURES (With text and logo)
+############################
+ex:Campaign_Web_NewFeatures_2025Q1 a brand:Campaign ;
+  brand:name "Web — New features (2025 Q1)" ;
+  brand:forBrand ex:Superside ;
+  
+  # SPECIFIC TEXT (Verbal Identity)
+  brand:hasHeadline "Scale Creative Ops Without The Chaos" ;
+  brand:hasSubhead "New AI-powered workflows for enterprise teams." ;
+  brand:hasCTA "See What's New" ;
+  
+  # LOGO INSTRUCTIONS (Visual Identity)
+  brand:logoPlacement "Top-Right Corner" ;
+  brand:logoStyle "White Monochrome (High Contrast)" ;
+
+  # VISUAL CONNECTION
+  brand:hasVisualConcept ex:Concept_CreativeFlow ;
+  brand:hasDeliverable ex:Deliverable_Banner .
+
+############################
+# LOGO AND TYPE RULES
+############################
+ex:LogoRule_RefinedSquiggle a brand:LogoUsageRule ;
+  brand:description "Use the Superside 'S' squiggle logo. Keep it clean, with clear space. Do not distort." .
+
+ex:Typography_Superside_2025 a brand:Typography ;
+  brand:primaryFontFamily "Inter Tight" .
+
+############################
+# VISUAL CONCEPT (The Scene)
+############################
+ex:Concept_CreativeFlow a brand:VisualConcept ;
+  brand:description "A candid, over-the-shoulder shot of a Senior Designer deeply focused on a digital interface. The screen glows softly against their face." ;
+  brand:hasVisualAnchor "Natural golden hour lighting coming from a side window" ;
+  brand:hasVisualAnchor "Texture of wood grain on the desk" ;
+  brand:hasVisualAnchor "Coffee cup and physical sketches on desk" .
+
+############################
+# STYLE RULES (Reusable)
+############################
+ex:Rule_Photoreal a brand:ImageryRule ;
+  brand:ruleType "positive" ;
+  brand:description "Photorealistic imagery grounded in real production context; natural light, real textures" .
+
+ex:Rule_SystemAware a brand:ImageryRule ;
+  brand:ruleType "positive" ;
+  brand:description "Show creative production at scale, messy but aesthetic workflow" .
+
+ex:Rule_NoNeon a brand:ImageryRule ;
+  brand:ruleType "negative" ;
+  brand:description "Avoid neon/futuristic AI tropes, glowing circuits, cyberpunk palettes" .
+
+ex:Rule_NoStock a brand:ImageryRule ;
+  brand:ruleType "negative" ;
+  brand:description "Avoid generic stock-photo look, posed teams shaking hands" .
+
+############################
+# FORMATS
+############
+ex:Deliverable_Banner a brand:Deliverable ;
+  brand:usesFormat ex:Format_WebBanner .
+
+ex:Format_WebBanner a brand:Format ;
+  brand:widthPx 1200 ;
+  brand:heightPx 628 .
